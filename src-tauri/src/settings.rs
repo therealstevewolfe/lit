@@ -434,6 +434,8 @@ pub struct AppSettings {
     pub include_selected_text: bool,
     #[serde(default = "default_replace_selection")]
     pub replace_selection: bool,
+    #[serde(default)]
+    pub custom_instructions: Option<String>,
 }
 
 fn default_model() -> String {
@@ -495,6 +497,10 @@ fn default_replace_selection() -> bool {
     false
 }
 
+fn default_custom_instructions() -> Option<String> {
+    None
+}
+
 fn default_auto_submit() -> bool {
     false
 }
@@ -530,7 +536,7 @@ fn default_show_tray_icon() -> bool {
 }
 
 fn default_post_process_provider_id() -> String {
-    "openai".to_string()
+    "minimax".to_string()
 }
 
 fn default_post_process_providers() -> Vec<PostProcessProvider> {
@@ -633,6 +639,9 @@ fn default_post_process_api_keys() -> SecretMap {
 fn default_model_for_provider(provider_id: &str) -> String {
     if provider_id == APPLE_INTELLIGENCE_PROVIDER_ID {
         return APPLE_INTELLIGENCE_DEFAULT_MODEL_ID.to_string();
+    }
+    if provider_id == "minimax" {
+        return "minimax-m2.7".to_string();
     }
     String::new()
 }
@@ -826,6 +835,7 @@ pub fn get_default_settings() -> AppSettings {
         extra_recording_buffer_ms: 0,
         include_selected_text: default_include_selected_text(),
         replace_selection: default_replace_selection(),
+        custom_instructions: default_custom_instructions(),
     }
 }
 

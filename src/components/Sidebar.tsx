@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Cog, FlaskConical, History, Info, Sparkles, Cpu } from "lucide-react";
+import { Settings, Layers, Terminal, History, Sparkles, FlaskConical, Info, Cpu, LayoutGrid, HelpCircle } from "lucide-react";
 import LitTextLogo from "./icons/LitTextLogo";
-import LitIcon from "./icons/LitIcon";
 import { useSettings } from "../hooks/useSettings";
 import {
   GeneralSettings,
@@ -34,7 +33,7 @@ interface SectionConfig {
 export const SECTIONS_CONFIG = {
   general: {
     labelKey: "sidebar.general",
-    icon: LitIcon,
+    icon: Settings,
     component: GeneralSettings,
     enabled: () => true,
   },
@@ -46,7 +45,7 @@ export const SECTIONS_CONFIG = {
   },
   advanced: {
     labelKey: "sidebar.advanced",
-    icon: Cog,
+    icon: Terminal,
     component: AdvancedSettings,
     enabled: () => true,
   },
@@ -93,9 +92,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
     .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
 
   return (
-    <div className="flex flex-col w-40 h-full border-e border-mid-gray/20 items-center px-2">
-      <LitTextLogo width={80} className="m-4" />
-      <div className="flex flex-col w-full items-center gap-1 pt-2 border-t border-mid-gray/20">
+    <aside className="fixed left-0 top-12 bottom-0 w-64 bg-zinc-950 flex flex-col py-6 border-r border-white/10">
+      {/* Logo Header */}
+      <div className="px-6 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+            <span className="material-symbols-outlined text-on-primary-container text-sm">auto_awesome</span>
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-zinc-100 leading-none tracking-tighter">Lit</h2>
+            <p className="font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 mt-0.5">V1.0.4</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 space-y-1 px-3">
         {availableSections.map((section) => {
           const Icon = section.icon;
           const isActive = activeSection === section.id;
@@ -103,24 +115,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <div
               key={section.id}
-              className={`flex gap-2 items-center p-2 w-full rounded-lg cursor-pointer transition-colors ${
-                isActive
-                  ? "bg-logo-primary/80"
-                  : "hover:bg-mid-gray/20 hover:opacity-100 opacity-85"
-              }`}
               onClick={() => onSectionChange(section.id)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-200 ease-in-out ${
+                isActive
+                  ? "text-violet-300 border-l-2 border-violet-300 bg-zinc-900/50"
+                  : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30"
+              }`}
             >
-              <Icon width={24} height={24} className="shrink-0" />
-              <p
-                className="text-sm font-medium truncate"
-                title={t(section.labelKey)}
-              >
+              <Icon width={18} height={18} className="shrink-0" />
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em]">
                 {t(section.labelKey)}
-              </p>
+              </span>
             </div>
           );
         })}
+      </nav>
+
+      {/* Bottom Actions */}
+      <div className="px-6 mt-auto">
+        <button className="w-full py-2.5 px-4 bg-primary text-on-primary font-bold text-xs uppercase tracking-widest rounded-md hover:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+          <span className="material-symbols-outlined text-sm">add</span>
+          <span>New Project</span>
+        </button>
+        
+        <div className="mt-6 border-t border-zinc-900 pt-6">
+          <div className="flex items-center gap-3 py-2 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">
+            <HelpCircle width={18} height={18} className="shrink-0" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.05em]">Support</span>
+          </div>
+        </div>
       </div>
-    </div>
+    </aside>
   );
 };

@@ -250,7 +250,7 @@ function App() {
   return (
     <div
       dir={direction}
-      className="h-screen flex flex-col select-none cursor-default"
+      className="h-screen flex flex-col bg-background text-on-surface select-none cursor-default"
     >
       <Toaster
         theme="system"
@@ -258,29 +258,43 @@ function App() {
           unstyled: true,
           classNames: {
             toast:
-              "bg-background border border-mid-gray/20 rounded-lg shadow-lg px-4 py-3 flex items-center gap-3 text-sm",
-            title: "font-medium",
-            description: "text-mid-gray",
+              "bg-surface-container-low border border-white/10 rounded-xl shadow-xl px-4 py-3 flex items-center gap-3 text-sm",
+            title: "font-medium text-on-surface",
+            description: "text-outline text-sm",
           },
         }}
       />
-      {/* Main content area that takes remaining space */}
-      <div className="flex-1 flex overflow-hidden">
+
+      {/* Top Navigation Bar */}
+      <header className="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/50 flex items-center justify-between px-4 h-12">
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded-full bg-surface-container-high overflow-hidden flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-primary to-tertiary opacity-60"></div>
+          </div>
+          <span className="text-lg font-bold tracking-tighter text-zinc-100">{t("app.name")}</span>
+        </div>
+        <div className="flex items-center gap-2 text-violet-300">
+          <span className="material-symbols-outlined text-[20px]">sensors</span>
+        </div>
+      </header>
+
+      {/* Main content area */}
+      <div className="flex h-screen pt-12">
         <Sidebar
           activeSection={currentSection}
           onSectionChange={setCurrentSection}
         />
-        {/* Scrollable content area */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto">
-            <div className="flex flex-col items-center p-4 gap-4">
-              <AccessibilityPermissions />
-              {renderSettingsContent(currentSection)}
-            </div>
+
+        {/* Main Content Canvas */}
+        <main className="ml-64 flex-1 relative overflow-y-auto no-scrollbar bg-surface pb-8">
+          <div className="max-w-4xl mx-auto px-12 py-16">
+            <AccessibilityPermissions />
+            {renderSettingsContent(currentSection)}
           </div>
-        </div>
+        </main>
       </div>
-      {/* Fixed footer at bottom */}
+
+      {/* Fixed footer */}
       <Footer />
     </div>
   );

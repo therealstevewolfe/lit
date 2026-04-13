@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
         setVersion(appVersion);
       } catch (error) {
         console.error("Failed to get app version:", error);
-        setVersion("0.1.2");
+        setVersion("1.0.4");
       }
     };
 
@@ -22,21 +22,32 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full border-t border-mid-gray/20 pt-3">
-      <div className="flex justify-between items-center text-xs px-4 pb-3 text-text/60">
-        <div className="flex items-center gap-4">
-          <ModelSelector />
-        </div>
-
-        {/* Update Status */}
-        <div className="flex items-center gap-1">
-          <UpdateChecker />
-          <span>•</span>
-          {/* eslint-disable-next-line i18next/no-literal-string */}
-          <span>v{version}</span>
-        </div>
+    <footer className="fixed bottom-0 left-64 right-0 h-8 bg-zinc-950 border-t border-white/5 flex items-center justify-between px-6 z-50">
+      {/* Left side - System status */}
+      <div className="flex items-center gap-4">
+        <span className="font-mono text-[10px] uppercase text-zinc-500 tracking-[0.05em]">System Ready</span>
+        <div className="w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></div>
       </div>
-    </div>
+
+      {/* Right side - Links and version */}
+      <div className="flex items-center gap-6">
+        <a 
+          href="#" 
+          className="font-mono text-[10px] uppercase text-zinc-500 hover:text-zinc-300 transition-colors tracking-[0.05em]"
+        >
+          Documentation
+        </a>
+        <a 
+          href="#" 
+          className="font-mono text-[10px] uppercase text-zinc-500 hover:text-zinc-300 transition-colors tracking-[0.05em]"
+        >
+          API Status
+        </a>
+        <span className="font-mono text-[10px] uppercase text-zinc-800 tracking-[0.05em]">
+          Lit // v{version}
+        </span>
+      </div>
+    </footer>
   );
 };
 

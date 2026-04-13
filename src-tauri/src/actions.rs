@@ -5,6 +5,8 @@ use crate::audio_toolkit::{is_microphone_access_denied, is_no_input_device_error
 use crate::managers::audio::AudioRecordingManager;
 use crate::managers::history::HistoryManager;
 use crate::managers::transcription::TranscriptionManager;
+use crate::post_processing::selection_resolver::SelectionContext;
+use crate::post_processing::PostProcessor;
 use crate::settings::{get_settings, AppSettings, APPLE_INTELLIGENCE_PROVIDER_ID};
 use crate::shortcut;
 use crate::tray::{change_tray_icon, TrayIconState};
@@ -21,7 +23,8 @@ use std::time::Instant;
 use tauri::Manager;
 use tauri::{AppHandle, Emitter};
 
-pub struct SelectedTextContext(pub std::sync::Mutex<Option<String>>);
+/// Context for storing selection information (text or image)
+pub struct SelectionContextState(pub std::sync::Mutex<Option<SelectionContext>>);
 
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
@@ -68,8 +71,15 @@ fn build_system_prompt(prompt_template: &str) -> String {
 async fn post_process_transcription(
     settings: &AppSettings,
     transcription: &str,
-    selected_text: Option<String>,
+    selection: SelectionContext,
 ) -> Option<String> {
+    // Use the new PostProcessor for MiniMax with MCP support
+    if settings.post_process_provider_id == "minimax" {
+        let processor = PostProcessor::new(settings.clone());
+        return processor.process(transcription, selection).await;
+    }
+
+    // Fallback to legacy behavior for other providers
     let provider = match settings.active_post_process_provider().cloned() {
         Some(provider) => provider,
         None => {
@@ -151,19 +161,29 @@ async fn post_process_transcription(
         debug!("Using structured outputs for provider '{}'", provider.id);
 
         let system_prompt = build_system_prompt(&prompt);
-        let user_content = if let Some(ref text) = selected_text {
+        let user_content = if selection.has_text() {
             if prompt.contains("${selected_text}") || prompt.contains("${selection}") {
                 transcription.to_string()
             } else {
-                format!("{}\n\nContext:\n{}", transcription, text)
+                format!(
+                    "{}\n\nContext:\n{}",
+                    transcription,
+                    selection.selected_text.as_ref().unwrap_or(&String::new())
+                )
             }
         } else {
             transcription.to_string()
         };
-        let system_prompt = if let Some(ref text) = selected_text {
+        let system_prompt = if selection.has_text() {
             system_prompt
-                .replace("${selected_text}", text)
-                .replace("${selection}", text)
+                .replace(
+                    "${selected_text}",
+                    selection.selected_text.as_ref().unwrap_or(&String::new()),
+                )
+                .replace(
+                    "${selection}",
+                    selection.selected_text.as_ref().unwrap_or(&String::new()),
+                )
         } else {
             system_prompt
                 .replace("${selected_text}", "")
@@ -283,13 +303,14 @@ async fn post_process_transcription(
 
     // Legacy mode: Replace ${output} variable in the prompt with the actual text
     let mut processed_prompt = prompt.replace("${output}", transcription);
-    if let Some(ref text) = selected_text {
+    if selection.has_text() {
+        let text = selection.selected_text.clone().unwrap_or_default();
         if processed_prompt.contains("${selected_text}")
             || processed_prompt.contains("${selection}")
         {
             processed_prompt = processed_prompt
-                .replace("${selected_text}", text)
-                .replace("${selection}", text);
+                .replace("${selected_text}", &text)
+                .replace("${selection}", &text);
         } else {
             processed_prompt = format!("{}\n\nContext:\n{}", processed_prompt, text);
         }
@@ -383,7 +404,8 @@ pub(crate) struct ProcessedTranscription {
     pub final_text: String,
     pub post_processed_text: Option<String>,
     pub post_process_prompt: Option<String>,
-    pub selected_text: Option<String>,
+    #[allow(dead_code)]
+    pub selection_context: SelectionContext,
 }
 
 pub(crate) async fn process_transcription_output(
@@ -396,10 +418,10 @@ pub(crate) async fn process_transcription_output(
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
 
-    let selected_text = if let Some(ctx) = app.try_state::<SelectedTextContext>() {
-        ctx.0.lock().unwrap().take()
+    let selection_context = if let Some(ctx) = app.try_state::<SelectionContextState>() {
+        ctx.0.lock().unwrap().take().unwrap_or_default()
     } else {
-        None
+        SelectionContext::none()
     };
 
     if let Some(converted_text) = maybe_convert_chinese_variant(&settings, transcription).await {
@@ -408,7 +430,7 @@ pub(crate) async fn process_transcription_output(
 
     if post_process {
         if let Some(processed_text) =
-            post_process_transcription(&settings, &final_text, selected_text.clone()).await
+            post_process_transcription(&settings, &final_text, selection_context.clone()).await
         {
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
@@ -431,7 +453,7 @@ pub(crate) async fn process_transcription_output(
         final_text,
         post_processed_text,
         post_process_prompt,
-        selected_text,
+        selection_context,
     }
 }
 
@@ -441,16 +463,16 @@ impl ShortcutAction for TranscribeAction {
         debug!("TranscribeAction::start called for binding: {}", binding_id);
 
         if self.post_process {
-            // Capture selected text only if the setting is enabled.
+            // Capture selection only if the setting is enabled.
             // The actual capture is done in stop() to capture whatever is selected
             // at the moment the user releases the hotkey, not when they pressed it.
             let settings = get_settings(app);
             if settings.include_selected_text {
-                if let Some(ctx) = app.try_state::<SelectedTextContext>() {
-                    *ctx.0.lock().unwrap() = Some(String::new()); // placeholder until stop()
+                if let Some(ctx) = app.try_state::<SelectionContextState>() {
+                    *ctx.0.lock().unwrap() = Some(SelectionContext::none()); // placeholder until stop()
                 }
             } else {
-                if let Some(ctx) = app.try_state::<SelectedTextContext>() {
+                if let Some(ctx) = app.try_state::<SelectionContextState>() {
                     *ctx.0.lock().unwrap() = None;
                 }
             }
@@ -561,24 +583,24 @@ impl ShortcutAction for TranscribeAction {
         let stop_time = Instant::now();
         debug!("TranscribeAction::stop called for binding: {}", binding_id);
 
-        // Capture selected text when hotkey is released (if enabled).
-        // This captures whatever text is selected at the moment of release,
+        // Capture selection when hotkey is released (if enabled).
+        // This captures whatever is selected at the moment of release,
         // not what was selected when the hotkey was pressed.
         let settings = get_settings(app);
         if settings.include_selected_text {
-            if let Some(ctx) = app.try_state::<SelectedTextContext>() {
+            if let Some(ctx) = app.try_state::<SelectionContextState>() {
                 match crate::clipboard::get_selected_text(app) {
                     Ok(Some(text)) => {
                         debug!("Captured selected text of length {}", text.len());
-                        *ctx.0.lock().unwrap() = Some(text);
+                        *ctx.0.lock().unwrap() = Some(SelectionContext::text(text));
                     }
                     Ok(None) => {
                         debug!("No text selected at hotkey release");
-                        *ctx.0.lock().unwrap() = None;
+                        *ctx.0.lock().unwrap() = Some(SelectionContext::none());
                     }
                     Err(e) => {
                         debug!("Failed to capture selected text: {}", e);
-                        *ctx.0.lock().unwrap() = None;
+                        *ctx.0.lock().unwrap() = Some(SelectionContext::none());
                     }
                 }
             }

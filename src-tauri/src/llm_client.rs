@@ -275,3 +275,141 @@ pub async fn fetch_models(
 
     Ok(models)
 }
+
+/// Send a chat completion request with MCP tools support
+/// This is used for MiniMax and other providers that support MCP tools
+#[derive(Debug, Serialize)]
+pub struct ToolDefinition {
+    pub name: String,
+    pub description: String,
+    pub parameters: Value,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(untagged)]
+pub enum MessageContent {
+    Text(String),
+    Array(Vec<ContentPart>),
+}
+
+#[derive(Debug, Serialize)]
+pub struct ContentPart {
+    #[serde(rename = "type")]
+    pub part_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<ImageUrl>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct ImageUrl {
+    pub url: String,
+}
+
+#[derive(Debug, Serialize)]
+pub struct ToolMessage {
+    pub role: String,
+    pub content: MessageContent,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tools: Option<Vec<ToolDefinition>>,
+}
+
+/// Response structure for tool calls (may be used in future extensions)
+#[derive(Debug, Deserialize)]
+#[allow(dead_code)]
+struct ToolCallResponse {
+    pub name: Option<String>,
+    pub arguments: Option<String>,
+}
+
+/// Response structure for messages with tools (may be used in future extensions)
+#[derive(Debug, Deserialize)]
+#[allow(dead_code)]
+struct MessageWithTools {
+    pub content: Option<String>,
+    #[serde(default)]
+    pub tool_calls: Vec<ToolCallResponse>,
+}
+
+/// Response structure for choices with tools (may be used in future extensions)
+#[derive(Debug, Deserialize)]
+#[allow(dead_code)]
+struct ChoiceWithTools {
+    pub message: MessageWithTools,
+}
+
+/// Send a chat completion request with MCP tool support
+/// Returns Ok(Some(content)) on success, Ok(None) if response has no content,
+/// or Err on actual errors
+pub async fn send_chat_completion_with_mcp_tools(
+    provider: &PostProcessProvider,
+    api_key: String,
+    model: &str,
+    messages: Vec<ToolMessage>,
+) -> Result<Option<String>, String> {
+    let base_url = provider.base_url.trim_end_matches('/');
+    let url = format!("{}/chat/completions", base_url);
+
+    debug!("Sending MCP chat completion request to: {}", url);
+
+    let client = create_client(provider, &api_key)?;
+
+    let request_body = serde_json::json!({
+        "model": model,
+        "messages": messages,
+    });
+
+    let response = client
+        .post(&url)
+        .json(&request_body)
+        .send()
+        .await
+        .map_err(|e| format!("HTTP request failed: {}", e))?;
+
+    let status = response.status();
+    if !status.is_success() {
+        let error_text = response
+            .text()
+            .await
+            .unwrap_or_else(|_| "Failed to read error response".to_string());
+        return Err(format!(
+            "API request failed with status {}: {}",
+            status, error_text
+        ));
+    }
+
+    let completion: serde_json::Value = response
+        .json()
+        .await
+        .map_err(|e| format!("Failed to parse API response: {}", e))?;
+
+    // Try to extract content from response
+    if let Some(choices) = completion.get("choices").and_then(|c| c.as_array()) {
+        if let Some(choice) = choices.first() {
+            let message = &choice["message"];
+            if let Some(content) = message.get("content").and_then(|c| c.as_str()) {
+                if !content.is_empty() {
+                    return Ok(Some(content.to_string()));
+                }
+            }
+            // Check for tool calls
+            if let Some(tool_calls) = message.get("tool_calls").and_then(|t| t.as_array()) {
+                if let Some(tool_call) = tool_calls.first() {
+                    let name = tool_call
+                        .get("name")
+                        .and_then(|n| n.as_str())
+                        .unwrap_or("");
+                    let args = tool_call
+                        .get("arguments")
+                        .and_then(|a| a.as_str())
+                        .unwrap_or("{}");
+                    // Return tool call info for handling
+                    return Ok(Some(format!("[TOOL_CALL:{}:{}]", name, args)));
+                }
+            }
+        }
+    }
+
+    Ok(None)
+}

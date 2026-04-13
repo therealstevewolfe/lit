@@ -12,6 +12,7 @@ mod llm_client;
 mod managers;
 mod overlay;
 pub mod portable;
+pub mod post_processing;
 mod settings;
 mod shortcut;
 mod signal_handle;
@@ -359,6 +360,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::update_post_process_prompt,
             shortcut::delete_post_process_prompt,
             shortcut::set_post_process_selected_prompt,
+            shortcut::change_custom_instructions_setting,
             shortcut::update_custom_words,
             shortcut::suspend_binding,
             shortcut::resume_binding,
@@ -541,7 +543,7 @@ pub fn run(cli_args: CliArgs) {
             FILE_LOG_LEVEL.store(file_log_level.to_level_filter() as u8, Ordering::Relaxed);
             let app_handle = app.handle().clone();
             app.manage(TranscriptionCoordinator::new(app_handle.clone()));
-            app.manage(crate::actions::SelectedTextContext(std::sync::Mutex::new(
+            app.manage(crate::actions::SelectionContextState(std::sync::Mutex::new(
                 None,
             )));
 

@@ -18,6 +18,7 @@ interface SettingsStore {
   outputDevices: AudioDevice[];
   customSounds: { start: boolean; stop: boolean };
   postProcessModelOptions: Record<string, string[]>;
+  customInstructions: string | null;
 
   // Actions
   initialize: () => Promise<void>;
@@ -53,6 +54,8 @@ interface SettingsStore {
   updatePostProcessModel: (providerId: string, model: string) => Promise<void>;
   fetchPostProcessModels: (providerId: string) => Promise<string[]>;
   setPostProcessModelOptions: (providerId: string, models: string[]) => void;
+  updateCustomInstructions: (instructions: string | null) => Promise<void>;
+  setCustomInstructions: (instructions: string | null) => void;
 
   // Internal state setters
   setSettings: (settings: Settings | null) => void;
@@ -560,6 +563,38 @@ export const useSettingsStore = create<SettingsStore>()(
           ...state.postProcessModelOptions,
           [providerId]: models,
         },
+      })),
+
+    updateCustomInstructions: async (instructions) => {
+      const { setUpdating } = get();
+      const updateKey = "custom_instructions";
+
+      setUpdating(updateKey, true);
+
+      try {
+        const result = await commands.changeCustomInstructionsSetting(instructions);
+        if (result.status === "ok") {
+          set((state) => ({
+            settings: state.settings
+              ? { ...state.settings, custom_instructions: instructions }
+              : null,
+          }));
+        } else {
+          console.error("Failed to update custom instructions:", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to update custom instructions:", error);
+      } finally {
+        setUpdating(updateKey, false);
+      }
+    },
+
+    setCustomInstructions: (instructions) =>
+      set((state) => ({
+        customInstructions: instructions,
+        settings: state.settings
+          ? { ...state.settings, custom_instructions: instructions }
+          : null,
       })),
 
     // Load default settings from Rust

@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import type { ModelInfo } from "@/bindings";
 import type { ModelCardStatus } from "./ModelCard";
 import ModelCard from "./ModelCard";
-import LitTextLogo from "../icons/LitTextLogo";
 import { useModelStore } from "../../stores/modelStore";
 
 interface OnboardingProps {
@@ -89,16 +88,31 @@ const Onboarding: React.FC<OnboardingProps> = ({ onModelSelected }) => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col p-6 gap-4 inset-0">
-      <div className="flex flex-col items-center gap-2 shrink-0">
-        <LitTextLogo width={200} />
-        <p className="text-text/70 max-w-md font-medium mx-auto">
-          {t("onboarding.subtitle")}
-        </p>
+    <div className="relative flex flex-col items-center justify-between min-h-screen bg-background overflow-hidden px-8 py-16">
+      {/* Background glow orbs */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-20%] w-[140%] h-[60%] bg-gradient-to-b from-primary-container/10 via-transparent to-transparent opacity-40 blur-[100px]"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-background via-background to-transparent z-10"></div>
       </div>
 
-      <div className="max-w-[600px] w-full mx-auto text-center flex-1 flex flex-col min-h-0">
-        <div className="flex flex-col gap-4 pb-6">
+      {/* Logo section */}
+      <div className="relative z-20 flex flex-col items-center w-full mt-12">
+        <div className="w-24 h-24 mb-8 bg-surface-container-high rounded-full flex items-center justify-center neon-glow border border-white/5">
+          <span className="text-primary font-headline text-5xl font-extrabold tracking-tighter">Lit</span>
+        </div>
+        <div className="text-center space-y-4 max-w-xs">
+          <h1 className="text-4xl font-extrabold tracking-tight text-on-surface leading-tight">
+            Speak. <span className="text-primary">Transcribe.</span> Done.
+          </h1>
+          <p className="text-outline font-body text-base leading-relaxed opacity-80">
+            {t("onboarding.subtitle")}
+          </p>
+        </div>
+      </div>
+
+      {/* Model cards */}
+      <div className="relative z-20 w-full flex flex-col items-center gap-8 mb-12">
+        <div className="w-full space-y-6 max-w-md">
           {models
             .filter((m: ModelInfo) => !m.is_downloaded)
             .filter((model: ModelInfo) => model.is_recommended)
@@ -136,6 +150,20 @@ const Onboarding: React.FC<OnboardingProps> = ({ onModelSelected }) => {
               />
             ))}
         </div>
+      </div>
+
+      {/* Version indicator */}
+      <div className="absolute top-[25%] left-[50%] -translate-x-1/2 w-full max-w-md aspect-square pointer-events-none opacity-20">
+        <div className="w-full h-full rounded-full border border-primary/20 scale-150 blur-sm"></div>
+        <div className="absolute inset-0 w-full h-full rounded-full border border-primary/10 scale-125"></div>
+        <div className="absolute inset-0 w-full h-full rounded-full border border-primary/5 scale-110"></div>
+      </div>
+      
+      <div className="relative z-20 pb-4">
+        <p className="font-mono text-[11px] text-outline-variant flex items-center gap-2">
+          <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+          v1.0.4 Ready for session
+        </p>
       </div>
     </div>
   );

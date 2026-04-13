@@ -39,6 +39,8 @@ blob-report/
 
 .direnv
 .envrc
+.envrc.local
+.env
 
 # Nix build output
 result

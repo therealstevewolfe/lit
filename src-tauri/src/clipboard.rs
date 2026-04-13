@@ -704,7 +704,7 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
 /// after this operation (which is the expected behavior for replacement).
 pub fn replace_selected_text(text: String, app_handle: &AppHandle) -> Result<(), String> {
     let clipboard = app_handle.clipboard();
-    let old_text = clipboard.read_text().unwrap_or_default();
+    let _old_text = clipboard.read_text().unwrap_or_default();
 
     // Write the replacement text to clipboard
     clipboard
