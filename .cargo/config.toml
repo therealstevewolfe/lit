@@ -1,1 +1,2 @@
-[build]
+[env]
+LIBCLANG_PATH = "C:\\LLVM\\bin"

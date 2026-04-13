@@ -408,7 +408,7 @@ pub(crate) async fn process_transcription_output(
 
     if post_process {
         if let Some(processed_text) =
-            post_process_transcription(&settings, &final_text, selected_text).await
+            post_process_transcription(&settings, &final_text, selected_text.clone()).await
         {
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
