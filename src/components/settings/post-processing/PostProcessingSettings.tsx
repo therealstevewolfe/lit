@@ -9,6 +9,7 @@ import {
   SettingContainer,
   SettingsGroup,
   Textarea,
+  ToggleSwitch,
 } from "@/components/ui";
 import { Button } from "../../ui/Button";
 import { ResetButton } from "../../ui/ResetButton";
@@ -285,6 +286,45 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
             {t("settings.postProcessing.prompts.createNew")}
           </Button>
         </div>
+
+        {/* Selected text capture toggles */}
+        <SettingContainer
+          title={t("settings.postProcessing.prompts.includeSelectedText.title")}
+          description={t(
+            "settings.postProcessing.prompts.includeSelectedText.description",
+          )}
+          descriptionMode="tooltip"
+          layout="horizontal"
+          grouped={true}
+        >
+          <ToggleSwitch
+            checked={
+              (getSetting("include_selected_text") as boolean) || false
+            }
+            onChange={(checked) =>
+              updateSetting("include_selected_text", checked)
+            }
+            disabled={isUpdating("include_selected_text")}
+          />
+        </SettingContainer>
+
+        <SettingContainer
+          title={t("settings.postProcessing.prompts.replaceSelection.title")}
+          description={t(
+            "settings.postProcessing.prompts.replaceSelection.description",
+          )}
+          descriptionMode="tooltip"
+          layout="horizontal"
+          grouped={true}
+        >
+          <ToggleSwitch
+            checked={(getSetting("replace_selection") as boolean) || false}
+            onChange={(checked) =>
+              updateSetting("replace_selection", checked)
+            }
+            disabled={isUpdating("replace_selection")}
+          />
+        </SettingContainer>
 
         {!isCreating && hasPrompts && selectedPrompt && (
           <div className="space-y-3">

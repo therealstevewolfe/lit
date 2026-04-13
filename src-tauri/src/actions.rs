@@ -21,6 +21,8 @@ use std::time::Instant;
 use tauri::Manager;
 use tauri::{AppHandle, Emitter};
 
+pub struct SelectedTextContext(pub std::sync::Mutex<Option<String>>);
+
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
     error_type: String,
@@ -63,7 +65,11 @@ fn build_system_prompt(prompt_template: &str) -> String {
     prompt_template.replace("${output}", "").trim().to_string()
 }
 
-async fn post_process_transcription(settings: &AppSettings, transcription: &str) -> Option<String> {
+async fn post_process_transcription(
+    settings: &AppSettings,
+    transcription: &str,
+    selected_text: Option<String>,
+) -> Option<String> {
     let provider = match settings.active_post_process_provider().cloned() {
         Some(provider) => provider,
         None => {
@@ -145,7 +151,24 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
         debug!("Using structured outputs for provider '{}'", provider.id);
 
         let system_prompt = build_system_prompt(&prompt);
-        let user_content = transcription.to_string();
+        let user_content = if let Some(ref text) = selected_text {
+            if prompt.contains("${selected_text}") || prompt.contains("${selection}") {
+                transcription.to_string()
+            } else {
+                format!("{}\n\nContext:\n{}", transcription, text)
+            }
+        } else {
+            transcription.to_string()
+        };
+        let system_prompt = if let Some(ref text) = selected_text {
+            system_prompt
+                .replace("${selected_text}", text)
+                .replace("${selection}", text)
+        } else {
+            system_prompt
+                .replace("${selected_text}", "")
+                .replace("${selection}", "")
+        };
 
         // Handle Apple Intelligence separately since it uses native Swift APIs
         if provider.id == APPLE_INTELLIGENCE_PROVIDER_ID {
@@ -259,7 +282,23 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
     }
 
     // Legacy mode: Replace ${output} variable in the prompt with the actual text
-    let processed_prompt = prompt.replace("${output}", transcription);
+    let mut processed_prompt = prompt.replace("${output}", transcription);
+    if let Some(ref text) = selected_text {
+        if processed_prompt.contains("${selected_text}")
+            || processed_prompt.contains("${selection}")
+        {
+            processed_prompt = processed_prompt
+                .replace("${selected_text}", text)
+                .replace("${selection}", text);
+        } else {
+            processed_prompt = format!("{}\n\nContext:\n{}", processed_prompt, text);
+        }
+    } else {
+        processed_prompt = processed_prompt
+            .replace("${selected_text}", "")
+            .replace("${selection}", "");
+    }
+
     debug!("Processed prompt length: {} chars", processed_prompt.len());
 
     match crate::llm_client::send_chat_completion(
@@ -344,6 +383,7 @@ pub(crate) struct ProcessedTranscription {
     pub final_text: String,
     pub post_processed_text: Option<String>,
     pub post_process_prompt: Option<String>,
+    pub selected_text: Option<String>,
 }
 
 pub(crate) async fn process_transcription_output(
@@ -356,12 +396,20 @@ pub(crate) async fn process_transcription_output(
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
 
+    let selected_text = if let Some(ctx) = app.try_state::<SelectedTextContext>() {
+        ctx.0.lock().unwrap().take()
+    } else {
+        None
+    };
+
     if let Some(converted_text) = maybe_convert_chinese_variant(&settings, transcription).await {
         final_text = converted_text;
     }
 
     if post_process {
-        if let Some(processed_text) = post_process_transcription(&settings, &final_text).await {
+        if let Some(processed_text) =
+            post_process_transcription(&settings, &final_text, selected_text).await
+        {
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
 
@@ -383,6 +431,7 @@ pub(crate) async fn process_transcription_output(
         final_text,
         post_processed_text,
         post_process_prompt,
+        selected_text,
     }
 }
 
@@ -390,6 +439,22 @@ impl ShortcutAction for TranscribeAction {
     fn start(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
+
+        if self.post_process {
+            // Capture selected text only if the setting is enabled.
+            // The actual capture is done in stop() to capture whatever is selected
+            // at the moment the user releases the hotkey, not when they pressed it.
+            let settings = get_settings(app);
+            if settings.include_selected_text {
+                if let Some(ctx) = app.try_state::<SelectedTextContext>() {
+                    *ctx.0.lock().unwrap() = Some(String::new()); // placeholder until stop()
+                }
+            } else {
+                if let Some(ctx) = app.try_state::<SelectedTextContext>() {
+                    *ctx.0.lock().unwrap() = None;
+                }
+            }
+        }
 
         // Load model in the background
         let tm = app.state::<Arc<TranscriptionManager>>();
@@ -495,6 +560,29 @@ impl ShortcutAction for TranscribeAction {
 
         let stop_time = Instant::now();
         debug!("TranscribeAction::stop called for binding: {}", binding_id);
+
+        // Capture selected text when hotkey is released (if enabled).
+        // This captures whatever text is selected at the moment of release,
+        // not what was selected when the hotkey was pressed.
+        let settings = get_settings(app);
+        if settings.include_selected_text {
+            if let Some(ctx) = app.try_state::<SelectedTextContext>() {
+                match crate::clipboard::get_selected_text(app) {
+                    Ok(Some(text)) => {
+                        debug!("Captured selected text of length {}", text.len());
+                        *ctx.0.lock().unwrap() = Some(text);
+                    }
+                    Ok(None) => {
+                        debug!("No text selected at hotkey release");
+                        *ctx.0.lock().unwrap() = None;
+                    }
+                    Err(e) => {
+                        debug!("Failed to capture selected text: {}", e);
+                        *ctx.0.lock().unwrap() = None;
+                    }
+                }
+            }
+        }
 
         let ah = app.clone();
         let rm = Arc::clone(&app.state::<Arc<AudioRecordingManager>>());
@@ -607,7 +695,17 @@ impl ShortcutAction for TranscribeAction {
                                 let paste_time = Instant::now();
                                 let final_text = processed.final_text;
                                 ah.run_on_main_thread(move || {
-                                    match utils::paste(final_text, ah_clone.clone()) {
+                                    // Check if we should replace the current selection
+                                    let settings = get_settings(&ah_clone);
+                                    let paste_result = if settings.replace_selection {
+                                        debug!("Replacing selection with processed text");
+                                        crate::clipboard::replace_selected_text(
+                                            final_text, &ah_clone,
+                                        )
+                                    } else {
+                                        utils::paste(final_text, ah_clone.clone())
+                                    };
+                                    match paste_result {
                                         Ok(()) => debug!(
                                             "Text pasted successfully in {:?}",
                                             paste_time.elapsed()

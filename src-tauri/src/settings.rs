@@ -430,6 +430,10 @@ pub struct AppSettings {
     pub whisper_gpu_device: i32,
     #[serde(default)]
     pub extra_recording_buffer_ms: u64,
+    #[serde(default = "default_include_selected_text")]
+    pub include_selected_text: bool,
+    #[serde(default = "default_replace_selection")]
+    pub replace_selection: bool,
 }
 
 fn default_model() -> String {
@@ -481,6 +485,14 @@ fn default_word_correction_threshold() -> f64 {
 
 fn default_paste_delay_ms() -> u64 {
     60
+}
+
+fn default_include_selected_text() -> bool {
+    false
+}
+
+fn default_replace_selection() -> bool {
+    false
 }
 
 fn default_auto_submit() -> bool {
@@ -804,6 +816,8 @@ pub fn get_default_settings() -> AppSettings {
         ort_accelerator: OrtAcceleratorSetting::default(),
         whisper_gpu_device: default_whisper_gpu_device(),
         extra_recording_buffer_ms: 0,
+        include_selected_text: default_include_selected_text(),
+        replace_selection: default_replace_selection(),
     }
 }
 
@@ -878,6 +892,12 @@ pub fn load_or_create_app_settings(app: &AppHandle) -> AppSettings {
         store.set("settings", serde_json::to_value(&settings).unwrap());
     }
 
+    // Log migration status for new selected-text fields (defaults-off, backward-compatible)
+    debug!(
+        "Selected-text settings: include_selected_text={}, replace_selection={}",
+        settings.include_selected_text, settings.replace_selection
+    );
+
     settings
 }
 
@@ -901,6 +921,11 @@ pub fn get_settings(app: &AppHandle) -> AppSettings {
     if ensure_post_process_defaults(&mut settings) {
         store.set("settings", serde_json::to_value(&settings).unwrap());
     }
+
+    debug!(
+        "Selected-text settings: include_selected_text={}, replace_selection={}",
+        settings.include_selected_text, settings.replace_selection
+    );
 
     settings
 }
@@ -975,5 +1000,76 @@ mod tests {
         let out = format!("{:?}", map);
         assert!(!out.contains("secret"));
         assert!(out.contains("[REDACTED]"));
+    }
+
+    #[test]
+    fn pre_migration_json_deserializes_with_selected_text_defaults() {
+        // Simulate old settings JSON that doesn't have include_selected_text or replace_selection
+        let old_json = serde_json::json!({
+            "bindings": {},
+            "push_to_talk": true,
+            "audio_feedback": false,
+            "selected_model": "tiny",
+            "always_on_microphone": false,
+            "selected_language": "auto",
+            "overlay_position": "Bottom",
+            "debug_mode": false,
+            "log_level": "Debug",
+            "paste_method": "CtrlV",
+            "post_process_enabled": false,
+            "post_process_provider_id": "openai",
+            "post_process_providers": [],
+            "post_process_api_keys": {},
+            "post_process_models": {},
+            "post_process_prompts": [
+                {
+                    "id": "prompt_1",
+                    "name": "Test",
+                    "prompt": "Clean this transcript"
+                }
+            ]
+        });
+
+        let result: Result<AppSettings, _> = serde_json::from_value(old_json);
+        assert!(
+            result.is_ok(),
+            "Pre-migration JSON should deserialize without error"
+        );
+        let settings = result.unwrap();
+        // New fields should default to false (backward-compatible, feature off by default)
+        assert!(
+            !settings.include_selected_text,
+            "include_selected_text should default to false"
+        );
+        assert!(
+            !settings.replace_selection,
+            "replace_selection should default to false"
+        );
+    }
+
+    #[test]
+    fn new_fields_survive_round_trip() {
+        // Verify that settings with new fields enabled serialize and deserialize correctly
+        let settings = get_default_settings();
+        let json = serde_json::to_value(&settings).unwrap();
+        let deserialized: AppSettings = serde_json::from_value(json).unwrap();
+        assert_eq!(
+            deserialized.include_selected_text,
+            settings.include_selected_text
+        );
+        assert_eq!(deserialized.replace_selection, settings.replace_selection);
+    }
+
+    #[test]
+    fn selected_text_fields_default_to_false() {
+        let settings = get_default_settings();
+        assert!(
+            !settings.include_selected_text,
+            "include_selected_text defaults to false"
+        );
+        assert!(
+            !settings.replace_selection,
+            "replace_selection defaults to false"
+        );
     }
 }

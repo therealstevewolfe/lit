@@ -131,6 +131,10 @@ const settingUpdaters: {
   history_limit: (value) => commands.updateHistoryLimit(value as number),
   post_process_enabled: (value) =>
     commands.changePostProcessEnabledSetting(value as boolean),
+  include_selected_text: (value) =>
+    commands.changeIncludeSelectedTextSetting(value as boolean),
+  replace_selection: (value) =>
+    commands.changeReplaceSelectionSetting(value as boolean),
   post_process_selected_prompt_id: (value) =>
     commands.setPostProcessSelectedPrompt(value as string),
   mute_while_recording: (value) =>

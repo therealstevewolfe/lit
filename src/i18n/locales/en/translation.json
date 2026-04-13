@@ -402,6 +402,14 @@
           "title": "Selected Prompt",
           "description": "Select a template for refining transcriptions or create a new one. Use ${output} inside the prompt text to reference the captured transcript."
         },
+        "includeSelectedText": {
+          "title": "Include Selected Text",
+          "description": "When enabled, captures the currently selected text before recording and includes it as ${selected_text} or ${selection} in the post-processing prompt. Useful for context-aware processing."
+        },
+        "replaceSelection": {
+          "title": "Replace Selection",
+          "description": "When enabled, the post-processed result replaces the current text selection instead of being pasted at the cursor. Only applies when selected text capture is enabled."
+        },
         "noPrompts": "No prompts available",
         "selectPrompt": "Select a prompt",
         "createNew": "Create New Prompt",
@@ -409,7 +417,7 @@
         "promptLabelPlaceholder": "Enter prompt name",
         "promptInstructions": "Prompt Instructions",
         "promptInstructionsPlaceholder": "Write the instructions to run after transcription. Example: Improve grammar and clarity for the following text: ${output}",
-        "promptTip": "Tip: Use <code>${output}</code> to insert the transcribed text in your prompt.",
+        "promptTip": "Tip: Use <code>${output}</code> to insert the transcribed text. Use <code>${selected_text}</code> or <code>${selection}</code> to reference the currently selected text (when Include Selected Text is enabled).",
         "updatePrompt": "Update Prompt",
         "deletePrompt": "Delete Prompt",
         "createPrompt": "Create Prompt",

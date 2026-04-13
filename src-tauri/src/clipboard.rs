@@ -584,6 +584,42 @@ fn send_return_key(enigo: &mut Enigo, key_type: AutoSubmitKey) -> Result<(), Str
     Ok(())
 }
 
+/// Captures the currently selected text by sending a copy command and reading the clipboard.
+/// Restores the original clipboard content afterwards.
+pub fn get_selected_text(app_handle: &AppHandle) -> Result<Option<String>, String> {
+    let clipboard = app_handle.clipboard();
+    let old_text = clipboard.read_text().unwrap_or_default();
+
+    let enigo_state = app_handle
+        .try_state::<EnigoState>()
+        .ok_or("Enigo state not initialized")?;
+    let mut enigo = enigo_state
+        .0
+        .lock()
+        .map_err(|e| format!("Failed to lock Enigo: {}", e))?;
+
+    // Clear the clipboard temporarily to detect if anything is actually selected
+    let _ = clipboard.write_text("");
+
+    std::thread::sleep(std::time::Duration::from_millis(50));
+
+    // Send copy command
+    input::send_copy_ctrl_c(&mut enigo)?;
+
+    std::thread::sleep(std::time::Duration::from_millis(100));
+
+    let new_text = clipboard.read_text().unwrap_or_default();
+
+    // Restore clipboard
+    let _ = clipboard.write_text(&old_text);
+
+    if new_text.trim().is_empty() {
+        Ok(None)
+    } else {
+        Ok(Some(new_text))
+    }
+}
+
 fn should_send_auto_submit(auto_submit: bool, paste_method: PasteMethod) -> bool {
     auto_submit && paste_method != PasteMethod::None
 }
@@ -658,6 +694,73 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
             .write_text(&text)
             .map_err(|e| format!("Failed to copy to clipboard: {}", e))?;
     }
+
+    Ok(())
+}
+
+/// Replaces the currently selected text by writing the replacement text to clipboard,
+/// selecting all (Ctrl+A / Cmd+A), and pasting (Ctrl+V / Cmd+V).
+/// Does NOT restore the original clipboard content — the clipboard will contain `text`
+/// after this operation (which is the expected behavior for replacement).
+pub fn replace_selected_text(text: String, app_handle: &AppHandle) -> Result<(), String> {
+    let clipboard = app_handle.clipboard();
+    let old_text = clipboard.read_text().unwrap_or_default();
+
+    // Write the replacement text to clipboard
+    clipboard
+        .write_text(&text)
+        .map_err(|e| format!("Failed to write replacement text to clipboard: {}", e))?;
+
+    let enigo_state = app_handle
+        .try_state::<EnigoState>()
+        .ok_or("Enigo state not initialized")?;
+    let mut enigo = enigo_state
+        .0
+        .lock()
+        .map_err(|e| format!("Failed to lock Enigo: {}", e))?;
+
+    // Small delay to ensure clipboard is ready
+    std::thread::sleep(std::time::Duration::from_millis(50));
+
+    // Send Ctrl+A / Cmd+A to select all
+    #[cfg(target_os = "macos")]
+    {
+        enigo
+            .key(Key::Meta, enigo::Direction::Press)
+            .map_err(|e| format!("Failed to press Meta key: {}", e))?;
+        enigo
+            .key(Key::Other(0x00), enigo::Direction::Click)
+            .map_err(|e| format!("Failed to click A key: {}", e))?;
+        enigo
+            .key(Key::Meta, enigo::Direction::Release)
+            .map_err(|e| format!("Failed to release Meta key: {}", e))?;
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        enigo
+            .key(Key::Control, enigo::Direction::Press)
+            .map_err(|e| format!("Failed to press Control key: {}", e))?;
+        enigo
+            .key(Key::Unicode('a'), enigo::Direction::Click)
+            .map_err(|e| format!("Failed to click A key: {}", e))?;
+        enigo
+            .key(Key::Control, enigo::Direction::Release)
+            .map_err(|e| format!("Failed to release Control key: {}", e))?;
+    }
+
+    std::thread::sleep(std::time::Duration::from_millis(50));
+
+    // Send Ctrl+V / Cmd+V to paste (replacing the selection)
+    input::send_paste_ctrl_v(&mut enigo)?;
+
+    // Leave the clipboard with `text` (the replacement) — do NOT restore old_text.
+    // The clipboard now contains the processed result, which is the expected
+    // behavior for a replacement operation. If the user had other content copied,
+    // that is now lost (but was captured into selected_text if needed).
+    debug!(
+        "Replaced selection with text of length {}; clipboard contains result",
+        text.len()
+    );
 
     Ok(())
 }
