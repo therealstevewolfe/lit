@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings Models - Lit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {background: "#141313", "surface-dim": "#141313", "secondary-container": "#474747", "on-tertiary-fixed": "#1e1b1a", "tertiary-container": "#a49d9b", "surface-bright": "#3a3939", "primary-fixed-dim": "#c7c6c6", "primary-fixed": "#e3e2e2", "surface-container-lowest": "#0e0e0e", "on-tertiary-fixed-variant": "#4b4644", "on-secondary-fixed-variant": "#474747", "inverse-on-surface": "#313030", "error-container": "#93000a", "surface-container-low": "#1c1b1b", "secondary-fixed": "#e4e2e1", "surface-tint": "#c7c6c6", "on-secondary": "#303030", "on-primary-fixed-variant": "#464747", "on-tertiary-container": "#393533", "on-tertiary": "#342f2e", "surface-variant": "#353434", "on-primary-fixed": "#1a1c1c", "inverse-surface": "#e5e2e1", "on-surface": "#e5e2e1", "on-surface-variant": "#c4c7c7", "on-error": "#690005", error: "#ffb4ab", "outline-variant": "#444748", "tertiary-fixed": "#e9e1de", "on-secondary-container": "#b6b5b4", outline: "#8e9192", "secondary-fixed-dim": "#c8c6c6", "on-secondary-fixed": "#1b1c1c", "on-primary": "#2f3131", "surface-container-highest": "#353434", "surface-container-high": "#2a2a2a", "primary-container": "#9e9e9e", "on-error-container": "#ffdad6", "surface-container": "#201f1f", secondary: "#c8c6c6", "on-background": "#e5e2e1", primary: "#c7c6c6", "tertiary-fixed-dim": "#cdc5c3", surface: "#141313", "on-primary-container": "#343636", "inverse-primary": "#5e5e5f", tertiary: "#cdc5c3"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontFamily: {headline: ["Inter"], body: ["Inter"], label: ["Be Vietnam Pro"], mono: ["JetBrains Mono"], display: "Inter"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(19, 19, 20, 0.6);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/50 flex items-center justify-between px-4 h-12">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a digital avatar with neon accents and minimalist features on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcxHmnZwmDHr7WE_LyXW8RE4UA7ljTvVKJFHuqaGU_BGoClc7V37l9jMOy01uRvShgZTMCTAyLPe2VDbOCIDMsrDjRKl2GY8Q0wNFounSrr4dz1JUqh9KDG7DmN8tBFlL5fvWnNMSx09lRSQX17yw0UuKDTkFiRUAxWXGF7kX1CsmWXtz7hebAHeDnC6Cyv_MIn23pCrOaokEskjD_SgaluW0IuAGksVNB7Z_vArnnynhdGWgrH_VplrmjqWp1LslSd4Bj3BJkCeM"/>
+</div>
+<span class="text-lg font-bold tracking-tighter text-zinc-100">Lit</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-violet-300" data-icon="sensors">sensors</span>
+</div>
+</header>
+<main class="pt-16 pb-24 px-4 max-w-md mx-auto">
+<!-- System Status Bar -->
+<section class="mb-6 flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl border border-white/5 shadow-inner">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-outline">System Optimal</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] text-primary">8.2GB FREE</span>
+<div class="w-20 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-primary shadow-[0_0_8px_rgba(208,188,255,0.5)]"></div>
+</div>
+</div>
+</section>
+<!-- Section Title -->
+<div class="mb-6">
+<h1 class="text-2xl font-extrabold tracking-tight text-on-surface mb-1">Model Library</h1>
+<p class="text-sm text-outline font-medium">Select a core to power your workspace</p>
+</div>
+<!-- Model Cards List -->
+<div class="space-y-4">
+<!-- Model Card: Small -->
+<div class="group relative bg-surface-container-low rounded-2xl overflow-hidden transition-all duration-300 hover:bg-surface-container-high border-l-2 border-primary">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="text-lg font-bold">Small</h3>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-tighter">Current</span>
+</div>
+<p class="text-xs text-outline leading-relaxed">Efficient processing for real-time edge responses.</p>
+</div>
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-5">
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Size</span>
+<span class="text-xs font-semibold">1.2 GB</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Accuracy</span>
+<span class="text-xs font-semibold text-tertiary">Fast</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Latency</span>
+<span class="text-xs font-semibold">12ms</span>
+</div>
+</div>
+<button class="w-full h-11 bg-surface-container-highest text-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-lg" data-icon="settings_backup_restore">settings_backup_restore</span>
+                        REINSTALL
+                    </button>
+</div>
+</div>
+<!-- Model Card: Base -->
+<div class="group relative bg-surface-container-low rounded-2xl overflow-hidden transition-all duration-300 hover:bg-surface-container-high">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-lg font-bold mb-1 text-on-surface">Base</h3>
+<p class="text-xs text-outline leading-relaxed">Balanced performance for complex reasoning tasks.</p>
+</div>
+<span class="material-symbols-outlined text-outline text-2xl" data-icon="cloud_download">cloud_download</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-5">
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Size</span>
+<span class="text-xs font-semibold">4.8 GB</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Accuracy</span>
+<span class="text-xs font-semibold text-primary">High</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Latency</span>
+<span class="text-xs font-semibold">45ms</span>
+</div>
+</div>
+<button class="w-full h-11 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+                        DOWNLOAD
+                    </button>
+</div>
+</div>
+<!-- Model Card: Large-v3 -->
+<div class="group relative bg-surface-container-low rounded-2xl overflow-hidden transition-all duration-300 hover:bg-surface-container-high">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="text-lg font-bold">Large-v3</h3>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-tighter">Pro</span>
+</div>
+<p class="text-xs text-outline leading-relaxed">State-of-the-art accuracy for creative production.</p>
+</div>
+<span class="material-symbols-outlined text-outline text-2xl" data-icon="lock">lock</span>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-5 opacity-60">
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Size</span>
+<span class="text-xs font-semibold">12.4 GB</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Accuracy</span>
+<span class="text-xs font-semibold text-secondary">Elite</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="block font-mono text-[9px] text-outline uppercase tracking-wider mb-1">Latency</span>
+<span class="text-xs font-semibold">180ms</span>
+</div>
+</div>
+<button class="w-full h-11 bg-surface-container-highest text-outline font-bold text-sm rounded-xl flex items-center justify-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-lg" data-icon="shopping_bag">shopping_bag</span>
+                        UPGRADE TO UNLOCK
+                    </button>
+</div>
+</div>
+</div>
+<!-- Footnote -->
+<div class="mt-8 text-center px-6">
+<p class="text-[10px] font-mono text-outline uppercase tracking-[0.2em]">All models run locally via lit-engine v2.4</p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-zinc-950/80 backdrop-blur-2xl rounded-t-2xl border-t border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.8)] flex justify-around items-center h-16 px-6">
+<a class="flex flex-col items-center justify-center text-zinc-500 active:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="grid_view">grid_view</span>
+<span class="font-mono text-[10px] uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 active:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="history">history</span>
+<span class="font-mono text-[10px] uppercase tracking-wider">History</span>
+</a>
+<!-- Active Item: Settings -->
+<a class="flex flex-col items-center justify-center text-violet-300 bg-violet-500/10 rounded-xl px-4 py-1 active:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-mono text-[10px] uppercase tracking-wider">Settings</span>
+</a>
+</nav>
+</body></html>

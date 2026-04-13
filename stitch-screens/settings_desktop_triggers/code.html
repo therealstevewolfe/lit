@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lit | Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"tertiary-fixed-dim": "#cdc5c3", "primary-container": "#9e9e9e", "on-surface-variant": "#c4c7c7", "on-error": "#690005", outline: "#8e9192", "secondary-fixed-dim": "#c8c6c6", background: "#141313", surface: "#141313", "on-tertiary-fixed": "#1e1b1a", "on-background": "#e5e2e1", "on-tertiary-container": "#393533", "secondary-container": "#474747", "primary-fixed-dim": "#c7c6c6", "tertiary-container": "#a49d9b", "surface-container": "#201f1f", "surface-variant": "#353434", "on-primary-container": "#343636", "on-secondary-fixed": "#1b1c1c", "surface-dim": "#141313", secondary: "#c8c6c6", "surface-container-highest": "#353434", "surface-container-high": "#2a2a2a", "on-secondary-fixed-variant": "#474747", "primary-fixed": "#e3e2e2", "secondary-fixed": "#e4e2e1", "on-primary-fixed": "#1a1c1c", "on-primary-fixed-variant": "#464747", "on-primary": "#2f3131", "surface-container-low": "#1c1b1b", "on-surface": "#e5e2e1", tertiary: "#cdc5c3", "on-error-container": "#ffdad6", "surface-bright": "#3a3939", "on-tertiary": "#342f2e", "inverse-primary": "#5e5e5f", "on-secondary-container": "#b6b5b4", "inverse-surface": "#e5e2e1", "surface-tint": "#c7c6c6", "on-tertiary-fixed-variant": "#4b4644", "on-secondary": "#303030", "inverse-on-surface": "#313030", error: "#ffb4ab", "error-container": "#93000a", "tertiary-fixed": "#e9e1de", primary: "#c7c6c6", "surface-container-lowest": "#0e0e0e", "outline-variant": "#444748"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontFamily: {headline: ["Inter"], body: ["Inter"], label: ["Be Vietnam Pro"], mono: ["JetBrains Mono"], display: "Inter"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-panel {
+            background: rgba(53, 52, 54, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(208, 188, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden selection:bg-primary/30">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl border-b border-white/5 h-12 flex items-center justify-between px-4">
+<div class="flex items-center gap-6">
+<span class="text-lg font-bold tracking-tighter text-zinc-100" style="">Lit</span>
+<nav class="hidden md:flex gap-4">
+<span class="font-sans text-sm tracking-tight font-medium text-zinc-500 hover:bg-white/5 transition-colors px-2 py-1 rounded cursor-pointer" style="">Dashboard</span>
+<span class="font-sans text-sm tracking-tight font-medium text-zinc-500 hover:bg-white/5 transition-colors px-2 py-1 rounded cursor-pointer" style="">Library</span>
+<span class="font-sans text-sm tracking-tight font-medium text-zinc-100 px-2 py-1 rounded cursor-pointer" style="">Settings</span>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 text-zinc-500 hover:bg-white/5 transition-colors rounded" style="">
+<span class="material-symbols-outlined text-[18px]" style="">close</span>
+</button>
+<button class="p-1.5 text-zinc-500 hover:bg-white/5 transition-colors rounded" style="">
+<span class="material-symbols-outlined text-[18px]" style="">remove</span>
+</button>
+<button class="p-1.5 text-zinc-500 hover:bg-white/5 transition-colors rounded" style="">
+<span class="material-symbols-outlined text-[18px]" style="">check_box_outline_blank</span>
+</button>
+</div>
+</header>
+<div class="flex h-screen pt-12">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-12 bottom-0 w-64 bg-zinc-950 flex flex-col py-6 border-r border-white/5">
+<div class="px-6 mb-8">
+<div class="text-xl font-bold tracking-tight text-zinc-100" style="">Settings</div>
+<div class="font-mono text-[10px] uppercase tracking-[0.1em] text-zinc-600 mt-1" style="">V1.0.4 build.0x9F</div>
+</div>
+<nav class="flex-1 space-y-0.5">
+<div class="flex items-center gap-3 px-6 py-2.5 text-primary border-l-2 border-primary bg-primary/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" style="">settings</span>
+<span class="font-mono text-[11px] uppercase tracking-wider" style="">General</span>
+</div>
+<div class="flex items-center gap-3 px-6 py-2.5 text-zinc-500 hover:text-zinc-300 hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" style="">layers</span>
+<span class="font-mono text-[11px] uppercase tracking-wider" style="">Models</span>
+</div>
+<div class="flex items-center gap-3 px-6 py-2.5 text-zinc-500 hover:text-zinc-300 hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" style="">terminal</span>
+<span class="font-mono text-[11px] uppercase tracking-wider" style="">Advanced</span>
+</div>
+<div class="flex items-center gap-3 px-6 py-2.5 text-zinc-500 hover:text-zinc-300 hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" style="">history</span>
+<span class="font-mono text-[11px] uppercase tracking-wider" style="">History</span>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded bg-primary text-on-primary text-[11px] font-mono uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all" style="">
+<span class="material-symbols-outlined text-[18px]" style="">add</span>
+<span class="" style="">New Project</span>
+</button>
+<div class="mt-6 flex items-center gap-3 py-2 text-zinc-600 hover:text-zinc-300 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]" style="">help_outline</span>
+<span class="font-mono text-[10px] uppercase tracking-widest" style="">Support</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 flex-1 bg-surface relative overflow-y-auto no-scrollbar">
+<div class="max-w-4xl mx-auto px-12 py-16">
+<header class="mb-12">
+<h1 class="text-4xl font-bold tracking-tight text-on-surface mb-2" style="">General</h1>
+<p class="text-outline text-sm" style="">Configure background service triggers and system-level interaction behavior.</p>
+</header>
+<div class="grid grid-cols-12 gap-6">
+<!-- Global Keyboard Shortcuts -->
+<section class="col-span-12 bg-surface-container-low rounded-xl p-8 border border-white/5">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-mono text-[11px] uppercase tracking-[0.15em] text-primary mb-1" style="">Global Shortcuts</h2>
+<p class="text-on-surface text-lg font-medium" style="">Trigger Controls</p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="keyboard" style="">keyboard</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg border border-white/5 hover:border-primary/20 transition-colors group">
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors" style="">Start / Stop Recording</span>
+<div class="flex gap-1.5">
+<kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20">⌘</kbd>
+<kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20">Shift</kbd>
+<kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20 uppercase">R</kbd>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg border border-white/5 hover:border-primary/20 transition-colors group">
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors" style="">Cancel Current Session</span>
+<div class="flex gap-1.5">
+<kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20 uppercase">Esc</kbd>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg border border-white/5 hover:border-primary/20 transition-colors group">
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors" style="">Quick Settings Overlay</span>
+<div class="flex gap-1.5">
+<kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20">⌘</kbd>
+<kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20 uppercase">,</kbd>
+</div>
+</div>
+</div>
+</section>
+<!-- System Integration -->
+<section class="col-span-12 lg:col-span-7 bg-surface-container-low rounded-xl p-8 border border-white/5">
+<div class="mb-8">
+<h2 class="font-mono text-[11px] uppercase tracking-[0.15em] text-primary mb-1" style="">System Integration</h2>
+<p class="text-on-surface text-lg font-medium" style="">Native OS Behavior</p>
+</div>
+<div class="space-y-4">
+<label class="flex items-center justify-between cursor-pointer group" style="">
+<span class="text-sm text-on-surface-variant group-hover:text-on-surface transition-colors" style="">Launch at Login</span>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+<div class="h-px bg-white/5"></div>
+<label class="flex items-center justify-between cursor-pointer group" style="">
+<span class="text-sm text-on-surface-variant group-hover:text-on-surface transition-colors" style="">Show in Menu Bar</span>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+<div class="h-px bg-white/5"></div>
+<label class="flex items-center justify-between cursor-pointer group" style="">
+<div>
+<span class="text-sm text-on-surface-variant group-hover:text-on-surface transition-colors" style="">Enable System Audio Capture</span>
+<p class="text-[10px] text-zinc-500 font-mono uppercase tracking-tighter mt-0.5" style="">Requires Virtual Driver</p>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+</div>
+</section>
+<!-- Global Push-to-Talk -->
+<section class="col-span-12 lg:col-span-5 glass-panel rounded-xl p-8 flex flex-col relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+<div class="relative z-10">
+<div class="mb-6">
+<h2 class="font-mono text-[11px] uppercase tracking-[0.15em] text-primary mb-1" style="">Advanced Input</h2>
+<p class="text-on-surface text-lg font-medium" style="">Global Push-to-Talk</p>
+</div>
+<div class="bg-zinc-950/40 rounded-lg p-4 border border-white/5 mb-6">
+<div class="text-[10px] text-zinc-500 font-mono uppercase tracking-widest mb-3" style="">Assigned Key</div>
+<div class="flex items-center justify-between">
+<span class="font-mono text-sm text-primary tracking-widest" style=""><kbd class="px-2.5 py-1.5 bg-surface-variant text-primary font-mono text-[11px] rounded border border-primary/20 min-w-[32px] flex items-center justify-center shadow-lg shadow-black/20" style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2); --tw-shadow-colored: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2); --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ; --tw-bg-opacity: 1; background-color: rgb(53, 52, 54); --tw-text-opacity: 1; color: rgb(208, 188, 255); box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.2) 0px 10px 15px -3px, rgba(0, 0, 0, 0.2) 0px 4px 6px -4px; --tw-shadow-color: rgb(0 0 0 / 0.2); letter-spacing: normal;">⌘<br/></kbd></span>
+<button class="text-[10px] font-mono text-zinc-500 hover:text-primary transition-colors border border-white/10 px-2 py-1 rounded" style="">RECORD NEW</button>
+</div>
+</div>
+<p class="text-[11px] text-outline leading-relaxed italic" style="">
+                                "The recording engine will activate only while this key is held down, overriding system defaults."
+                            </p>
+</div>
+</section>
+<!-- Advanced Card -->
+<section class="col-span-12 h-40 rounded-xl overflow-hidden relative group cursor-pointer border border-white/5">
+<div class="absolute inset-0 bg-zinc-950/80 z-10 transition-colors group-hover:bg-zinc-950/70"></div>
+<div class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBATwDg8mNfw3-GKKsf-LL6j2tNEZWuaGH2StsTNSXbG7LaO2YI1cVsVc9uDy22NXMWpmhHkqEcniyuNPgTWac-Bhfjj0zDxQUI_7kleIEHvg_M4DUPH1AoOkzppeNsNj6qRo3jIEC4KhWxpsC2dmc__o08oZorIKXGGoVc_reRcJXUJH6Awk6NQom6xfhk4QUkA4Nc9_sGrpXXScvaI8PPBSh1k5BtqX6AIWjSPrv-z0cxm_8ZYH0XW9JcwmZoS4uNbsqnhaiGNFU");'></div>
+<div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8">
+<h3 class="text-xl font-bold tracking-tight mb-2" style="">Need more control?</h3>
+<p class="text-outline text-xs max-w-sm" style="">Fine-tune buffer sizes, sample rates, and threading models in Advanced settings.</p>
+<button class="mt-4 flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-[0.2em] group-hover:gap-3 transition-all duration-300" style="">
+<span class="" style="">Go to Advanced</span>
+<span class="material-symbols-outlined text-[14px]" style="">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<!-- Status Bar -->
+<footer class="fixed bottom-0 left-64 right-0 h-8 bg-zinc-950 border-t border-white/5 flex items-center justify-between px-6 z-50">
+<div class="flex items-center gap-4">
+<span class="font-mono text-[9px] uppercase text-zinc-500 tracking-wider" style="">Service: Active</span>
+<div class="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
+</div>
+<div class="flex items-center gap-6">
+<a class="font-mono text-[9px] uppercase text-zinc-600 hover:text-primary transition-colors tracking-wider" href="#" style="">Documentation</a>
+<a class="font-mono text-[9px] uppercase text-zinc-600 hover:text-primary transition-colors tracking-wider" href="#" style="">Drivers</a>
+<span class="font-mono text-[9px] uppercase text-zinc-800 tracking-wider" style="">Lit.Core.Runtime // 0x4A2B</span>
+</div>
+</footer>
+</body></html>

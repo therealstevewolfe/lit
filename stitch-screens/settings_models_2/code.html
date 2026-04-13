@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"tertiary-fixed-dim": "#cdc5c3", "primary-container": "#9e9e9e", "on-surface-variant": "#c4c7c7", "on-error": "#690005", outline: "#8e9192", "secondary-fixed-dim": "#c8c6c6", background: "#141313", surface: "#141313", "on-tertiary-fixed": "#1e1b1a", "on-background": "#e5e2e1", "on-tertiary-container": "#393533", "secondary-container": "#474747", "primary-fixed-dim": "#c7c6c6", "tertiary-container": "#a49d9b", "surface-container": "#201f1f", "surface-variant": "#353434", "on-primary-container": "#343636", "on-secondary-fixed": "#1b1c1c", "surface-dim": "#141313", secondary: "#c8c6c6", "surface-container-highest": "#353434", "surface-container-high": "#2a2a2a", "on-secondary-fixed-variant": "#474747", "primary-fixed": "#e3e2e2", "secondary-fixed": "#e4e2e1", "on-primary-fixed": "#1a1c1c", "on-primary-fixed-variant": "#464747", "on-primary": "#2f3131", "surface-container-low": "#1c1b1b", "on-surface": "#e5e2e1", tertiary: "#cdc5c3", "on-error-container": "#ffdad6", "surface-bright": "#3a3939", "on-tertiary": "#342f2e", "inverse-primary": "#5e5e5f", "on-secondary-container": "#b6b5b4", "inverse-surface": "#e5e2e1", "surface-tint": "#c7c6c6", "on-tertiary-fixed-variant": "#4b4644", "on-secondary": "#303030", "inverse-on-surface": "#313030", error: "#ffb4ab", "error-container": "#93000a", "tertiary-fixed": "#e9e1de", primary: "#c7c6c6", "surface-container-lowest": "#0e0e0e", "outline-variant": "#444748"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontFamily: {headline: ["Inter"], body: ["Inter"], label: ["Be Vietnam Pro"], mono: ["JetBrains Mono"], display: "Inter"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(53, 52, 54, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(208, 188, 255, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl border-b border-white/10 flex items-center justify-between px-4 h-12 shadow-2xl shadow-black/50">
+<div class="flex items-center gap-8">
+<span class="text-lg font-bold tracking-tighter text-zinc-100">Lit</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-sans text-sm tracking-tight font-medium text-zinc-500 hover:bg-white/5 transition-colors px-2 py-1 rounded-lg" href="#">Projects</a>
+<a class="font-sans text-sm tracking-tight font-medium text-zinc-100 hover:bg-white/5 transition-colors px-2 py-1 rounded-lg" href="#">Models</a>
+<a class="font-sans text-sm tracking-tight font-medium text-zinc-500 hover:bg-white/5 transition-colors px-2 py-1 rounded-lg" href="#">Deploy</a>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-zinc-500 hover:bg-white/5 p-1.5 rounded-lg transition-colors" data-icon="close">close</button>
+<button class="material-symbols-outlined text-zinc-500 hover:bg-white/5 p-1.5 rounded-lg transition-colors" data-icon="remove">remove</button>
+<button class="material-symbols-outlined text-zinc-500 hover:bg-white/5 p-1.5 rounded-lg transition-colors" data-icon="check_box_outline_blank">check_box_outline_blank</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 w-64 bg-zinc-950 flex flex-col py-6">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-sm" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<h2 class="text-xl font-black text-zinc-100 leading-none">Lit</h2>
+<p class="font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500">V1.0.4</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="grid_view">grid_view</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="auto_stories">auto_stories</span>
+                Library
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="folder_open">folder_open</span>
+                Project
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.05em] text-violet-300 border-l-2 border-violet-300 bg-zinc-900/50 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="query_stats">query_stats</span>
+                Models
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-2.5 px-4 bg-primary text-on-primary font-bold text-xs uppercase tracking-widest rounded-md hover:scale-95 transition-all duration-200">
+                New Project
+            </button>
+<div class="mt-6 border-t border-zinc-900 pt-6">
+<a class="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 hover:text-zinc-300 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="help_outline">help_outline</span>
+                    Support
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-20 px-12 min-h-screen bg-surface">
+<div class="max-w-6xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+<div class="space-y-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(208,188,255,0.8)]"></span>
+<span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant">System Status: Optimal</span>
+</div>
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface">Model Management</h1>
+<p class="text-outline text-lg max-w-xl">
+                        Select and configure the neural transcription engine for your workspace. Higher parameter counts offer superior accuracy with increased latency.
+                    </p>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="font-mono text-[10px] uppercase text-outline">Available Storage</p>
+<p class="text-on-surface font-bold">128.4 GB / 512 GB</p>
+</div>
+<div class="w-24 h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/4"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid of Models -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Model Card: Small -->
+<div class="group relative flex flex-col p-8 rounded-xl bg-surface-container-low border border-transparent hover:border-outline-variant/30 transition-all duration-300">
+<div class="absolute top-4 right-4 font-mono text-[10px] text-outline">v1.2.0</div>
+<div class="mb-8">
+<div class="w-12 h-12 mb-6 rounded-lg bg-surface-container-high flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+</div>
+<h3 class="text-2xl font-bold mb-2">Small</h3>
+<p class="text-sm text-outline leading-relaxed">Optimized for speed. Perfect for quick drafts and real-time captioning in low-noise environments.</p>
+</div>
+<div class="space-y-4 mb-10">
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline uppercase tracking-wider font-semibold">Size</span>
+<span class="font-mono text-on-surface">480 MB</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline uppercase tracking-wider font-semibold">Accuracy</span>
+<div class="flex gap-1">
+<span class="w-4 h-1 bg-primary rounded-full"></span>
+<span class="w-4 h-1 bg-surface-container-highest rounded-full"></span>
+<span class="w-4 h-1 bg-surface-container-highest rounded-full"></span>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline uppercase tracking-wider font-semibold">Latency</span>
+<span class="text-tertiary">~15ms</span>
+</div>
+</div>
+<button class="mt-auto py-3 w-full border border-outline-variant text-on-surface text-xs font-bold uppercase tracking-widest rounded-md hover:bg-surface-container-high transition-colors">
+                        Download
+                    </button>
+</div>
+<!-- Model Card: Base (Active) -->
+<div class="group relative flex flex-col p-8 rounded-xl bg-surface-container-high border-2 border-primary active-glow transition-all duration-300 ring-4 ring-primary/5">
+<div class="absolute top-4 right-4 flex items-center gap-2">
+<span class="font-mono text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">ACTIVE</span>
+</div>
+<div class="mb-8">
+<div class="w-12 h-12 mb-6 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="balanced" style="font-variation-settings: 'FILL' 1;">balance</span>
+</div>
+<h3 class="text-2xl font-bold mb-2 text-on-surface">Base</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">The standard utility engine. Exceptional balance between semantic accuracy and processing overhead.</p>
+</div>
+<div class="space-y-4 mb-10">
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant uppercase tracking-wider font-semibold">Size</span>
+<span class="font-mono text-on-surface">1.2 GB</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant uppercase tracking-wider font-semibold">Accuracy</span>
+<div class="flex gap-1">
+<span class="w-4 h-1 bg-primary rounded-full"></span>
+<span class="w-4 h-1 bg-primary rounded-full"></span>
+<span class="w-4 h-1 bg-surface-container-highest rounded-full"></span>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant uppercase tracking-wider font-semibold">Latency</span>
+<span class="text-primary-fixed-dim">~80ms</span>
+</div>
+</div>
+<button class="mt-auto py-3 w-full bg-primary text-on-primary text-xs font-bold uppercase tracking-widest rounded-md hover:scale-95 transition-all duration-200">
+                        Select Model
+                    </button>
+</div>
+<!-- Model Card: Large-v3 -->
+<div class="group relative flex flex-col p-8 rounded-xl bg-surface-container-low border border-transparent hover:border-outline-variant/30 transition-all duration-300">
+<div class="absolute top-4 right-4 font-mono text-[10px] text-outline">v3.1.4</div>
+<div class="mb-8">
+<div class="w-12 h-12 mb-6 rounded-lg bg-surface-container-high flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-tertiary" data-icon="model_training">model_training</span>
+</div>
+<h3 class="text-2xl font-bold mb-2">Large-v3</h3>
+<p class="text-sm text-outline leading-relaxed">State-of-the-art accuracy. Ideal for complex multi-speaker dialogues and technical research papers.</p>
+</div>
+<div class="space-y-4 mb-10">
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline uppercase tracking-wider font-semibold">Size</span>
+<span class="font-mono text-on-surface">3.8 GB</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline uppercase tracking-wider font-semibold">Accuracy</span>
+<div class="flex gap-1">
+<span class="w-4 h-1 bg-primary rounded-full"></span>
+<span class="w-4 h-1 bg-primary rounded-full"></span>
+<span class="w-4 h-1 bg-primary rounded-full"></span>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline uppercase tracking-wider font-semibold">Latency</span>
+<span class="text-error">~450ms</span>
+</div>
+</div>
+<button class="mt-auto py-3 w-full border border-outline-variant text-on-surface text-xs font-bold uppercase tracking-widest rounded-md hover:bg-surface-container-high transition-colors">
+                        Download
+                    </button>
+</div>
+</div>
+<!-- Capabilities Asymmetric Section -->
+<div class="mt-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<div class="lg:col-span-4">
+<h2 class="font-mono text-[10px] uppercase tracking-[0.2em] text-primary mb-4">Architecture</h2>
+<h3 class="text-3xl font-bold mb-6">Engine Capabilities</h3>
+<p class="text-outline mb-8 leading-relaxed">
+                        Lit utilizes a transformer-based neural network architecture specifically tuned for low-resource environments without sacrificing linguistic nuance.
+                    </p>
+<div class="space-y-4">
+<div class="flex gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+<div>
+<h4 class="text-sm font-bold">98+ Languages</h4>
+<p class="text-xs text-outline">Automatic language detection and seamless switching.</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="keyboard_voice">keyboard_voice</span>
+<div>
+<h4 class="text-sm font-bold">Diarization</h4>
+<p class="text-xs text-outline">Identify multiple speakers in complex acoustic scenes.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-2xl p-1 overflow-hidden">
+<div class="relative w-full aspect-video rounded-xl overflow-hidden grayscale opacity-40 hover:grayscale-0 hover:opacity-80 transition-all duration-700">
+<img alt="Server room infrastructure" class="w-full h-full object-cover" data-alt="abstract view of a server room with glowing green and blue led lights on high-tech equipment in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA36he706xEZ9QgUGqL3SZntai-_ebXbAnlPeYFyv0O0Xbv1JOGiLXvd8F9ByXOrntKHSmLqzdVrLvrT2ejWquZC3l1zI3BH0G9Aa7tZrsn6R63Yim8SwEqVbo4o4NzpJ0p1HW72dSU9lOaIUtOhQZgBurXEv0PHEWvFjjtiBsNqFECyEPnDFwa1w1cWO0pgIRL-L-WRA2T7F6OIvyUUJBSqAhPumwW7yJT-KAgc1aY1J2FljSHZf-D8XE7aXIQSV_65CQrbOfl9sw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 rounded bg-zinc-950/80 text-[10px] font-mono border border-white/10 uppercase tracking-tighter">Live Telemetry</span>
+<span class="text-xs font-mono text-primary">0.02ms Response</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-64 right-0 h-8 bg-zinc-950 border-t border-white/5 flex items-center justify-between px-6 z-50">
+<div class="flex items-center gap-4">
+<span class="font-mono text-[10px] uppercase text-zinc-500">System Ready</span>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-mono text-[10px] uppercase text-zinc-500">Connected</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<a class="font-mono text-[10px] uppercase text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Documentation</a>
+<a class="font-mono text-[10px] uppercase text-zinc-500 hover:text-zinc-300 transition-colors" href="#">API Status</a>
+</div>
+</footer>
+</body></html>

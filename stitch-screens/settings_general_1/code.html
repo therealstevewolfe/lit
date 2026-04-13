@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lit | Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"tertiary-fixed-dim": "#cdc5c3", "primary-container": "#9e9e9e", "on-surface-variant": "#c4c7c7", "on-error": "#690005", outline: "#8e9192", "secondary-fixed-dim": "#c8c6c6", background: "#141313", surface: "#141313", "on-tertiary-fixed": "#1e1b1a", "on-background": "#e5e2e1", "on-tertiary-container": "#393533", "secondary-container": "#474747", "primary-fixed-dim": "#c7c6c6", "tertiary-container": "#a49d9b", "surface-container": "#201f1f", "surface-variant": "#353434", "on-primary-container": "#343636", "on-secondary-fixed": "#1b1c1c", "surface-dim": "#141313", secondary: "#c8c6c6", "surface-container-highest": "#353434", "surface-container-high": "#2a2a2a", "on-secondary-fixed-variant": "#474747", "primary-fixed": "#e3e2e2", "secondary-fixed": "#e4e2e1", "on-primary-fixed": "#1a1c1c", "on-primary-fixed-variant": "#464747", "on-primary": "#2f3131", "surface-container-low": "#1c1b1b", "on-surface": "#e5e2e1", tertiary: "#cdc5c3", "on-error-container": "#ffdad6", "surface-bright": "#3a3939", "on-tertiary": "#342f2e", "inverse-primary": "#5e5e5f", "on-secondary-container": "#b6b5b4", "inverse-surface": "#e5e2e1", "surface-tint": "#c7c6c6", "on-tertiary-fixed-variant": "#4b4644", "on-secondary": "#303030", "inverse-on-surface": "#313030", error: "#ffb4ab", "error-container": "#93000a", "tertiary-fixed": "#e9e1de", primary: "#c7c6c6", "surface-container-lowest": "#0e0e0e", "outline-variant": "#444748"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontFamily: {headline: ["Inter"], body: ["Inter"], label: ["Be Vietnam Pro"], mono: ["JetBrains Mono"], display: "Inter"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-panel {
+            background: rgba(53, 52, 54, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-tab-indicator {
+            box-shadow: 0 0 15px rgba(208, 188, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/50 h-12 flex items-center justify-between px-4">
+<div class="flex items-center gap-6">
+<span class="text-lg font-bold tracking-tighter text-zinc-100">Lit</span>
+<nav class="hidden md:flex gap-4">
+<span class="font-sans text-sm tracking-tight font-medium text-zinc-500 hover:bg-white/5 transition-colors px-2 py-1 rounded cursor-pointer">Dashboard</span>
+<span class="font-sans text-sm tracking-tight font-medium text-zinc-500 hover:bg-white/5 transition-colors px-2 py-1 rounded cursor-pointer">Library</span>
+<span class="font-sans text-sm tracking-tight font-medium text-zinc-100 px-2 py-1 rounded cursor-pointer">Settings</span>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 text-zinc-500 hover:bg-white/5 transition-colors rounded">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<button class="p-1.5 text-zinc-500 hover:bg-white/5 transition-colors rounded">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<button class="p-1.5 text-zinc-500 hover:bg-white/5 transition-colors rounded">
+<span class="material-symbols-outlined text-[20px]">check_box_outline_blank</span>
+</button>
+</div>
+</header>
+<div class="flex h-screen pt-12">
+<!-- Sidebar Shell -->
+<aside class="fixed left-0 top-12 bottom-0 w-64 bg-zinc-950 flex flex-col py-6">
+<div class="px-6 mb-8">
+<div class="text-xl font-black text-zinc-100">Settings</div>
+<div class="font-mono text-[11px] uppercase tracking-[0.05em] text-zinc-500 mt-1">V1.0.4</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- General Tab (Active) -->
+<div class="flex items-center gap-3 px-6 py-2.5 text-violet-300 border-l-2 border-violet-300 bg-zinc-900/50 transition-all duration-200 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-mono text-[11px] uppercase tracking-[0.05em]">General</span>
+</div>
+<!-- Models Tab -->
+<div class="flex items-center gap-3 px-6 py-2.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-mono text-[11px] uppercase tracking-[0.05em]">Models</span>
+</div>
+<!-- Advanced Tab -->
+<div class="flex items-center gap-3 px-6 py-2.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-mono text-[11px] uppercase tracking-[0.05em]">Advanced</span>
+</div>
+<!-- History Tab -->
+<div class="flex items-center gap-3 px-6 py-2.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30 transition-all duration-200 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-mono text-[11px] uppercase tracking-[0.05em]">History</span>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded bg-primary text-on-primary text-[11px] font-mono uppercase tracking-[0.05em] hover:scale-95 duration-200">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Project</span>
+</button>
+<div class="mt-6 flex items-center gap-3 py-2 text-zinc-600 hover:text-zinc-300 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>
+<span class="font-mono text-[10px] uppercase tracking-[0.05em]">Support</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 bg-surface relative overflow-y-auto no-scrollbar">
+<div class="max-w-4xl mx-auto px-12 py-16">
+<!-- Page Header -->
+<header class="mb-12">
+<h1 class="text-display-md text-4xl font-bold tracking-tight text-on-surface mb-2">General</h1>
+<p class="text-outline text-sm">Manage your workspace core settings and interaction preferences.</p>
+</header>
+<!-- Settings Bento Grid -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Shortcuts Section -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-xl p-8 transition-all hover:bg-surface-container">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-mono text-[11px] uppercase tracking-[0.1em] text-primary mb-1">Global Shortcuts</h2>
+<p class="text-on-surface text-lg font-medium">Quick Access Commands</p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="keyboard">keyboard</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg border border-white/5">
+<span class="text-sm font-medium">Quick Save Sequence</span>
+<div class="flex gap-1.5">
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">⌘</kbd>
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">Shift</kbd>
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">S</kbd>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg border border-white/5">
+<span class="text-sm font-medium">Toggle Command Palette</span>
+<div class="flex gap-1.5">
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">⌘</kbd>
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">K</kbd>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg border border-white/5">
+<span class="text-sm font-medium">Switch Workspaces</span>
+<div class="flex gap-1.5">
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">Ctrl</kbd>
+<kbd class="px-2 py-1 bg-surface-variant text-on-surface-variant font-mono text-xs rounded border border-white/10">TAB</kbd>
+</div>
+</div>
+</div>
+</section>
+<!-- Profile Snippet -->
+<section class="col-span-12 lg:col-span-4 bg-surface-container-high rounded-xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<img alt="User Avatar" class="w-20 h-20 rounded-full border-2 border-primary/20 mb-4 object-cover" data-alt="Close up portrait of a professional man with neutral expression, dramatic studio lighting on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_4DknfBp475n2vHckc29t-CZhx3c856j38FEkcrgHZhPJDs7IrlmWxN7GohvyBHCZTx2DNHYI4sRzF2tLOVa07p7xsnwwH-W5QazSEFDvDHJkt5gncoUeqvX71oSZ0J5yey8_Z9IMPqrGpwQUSwX5jkW1-Mc_vsaq2BLoBfZ0PAV1fiPwLR2wXFhS5xcy6-H66ukFnzcCOUOVxAfzkgo3-h_oDxVV7gqfpwjL5S-TCMA6OX1TJ1DJLdahaQuI70rTcWYW7hzvDOc"/>
+<div class="font-medium">Alex Rivera</div>
+<div class="font-mono text-[10px] text-outline uppercase tracking-wider mt-1">Pro Member</div>
+<button class="mt-6 text-xs text-primary hover:underline transition-all">Edit Account</button>
+</section>
+<!-- Language & Localization -->
+<section class="col-span-12 lg:col-span-6 bg-surface-container-low rounded-xl p-8 transition-all hover:bg-surface-container">
+<div class="mb-6">
+<h2 class="font-mono text-[11px] uppercase tracking-[0.1em] text-primary mb-1">Localization</h2>
+<p class="text-on-surface text-lg font-medium">Interface Language</p>
+</div>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border-none rounded-lg text-sm px-4 py-3 appearance-none focus:ring-1 focus:ring-primary transition-all text-on-surface-variant cursor-pointer">
+<option>English (United States)</option>
+<option>Deutsch (Deutschland)</option>
+<option>Français (France)</option>
+<option>日本語 (日本)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3.5 text-outline pointer-events-none" data-icon="unfold_more">unfold_more</span>
+</div>
+<p class="mt-4 text-[11px] text-outline leading-relaxed">Changing the language will reload the application shell and update technical documentation references.</p>
+</section>
+<!-- Interaction Settings -->
+<section class="col-span-12 lg:col-span-6 glass-panel rounded-xl p-8 relative">
+<div class="mb-6">
+<h2 class="font-mono text-[11px] uppercase tracking-[0.1em] text-primary mb-1">Voice &amp; Audio</h2>
+<p class="text-on-surface text-lg font-medium">Push to Talk</p>
+</div>
+<div class="flex items-center justify-between p-4 bg-zinc-950/40 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="mic">mic</span>
+<span class="text-sm">Enable Voice Commands</span>
+</div>
+<!-- Custom Toggle -->
+<div class="w-10 h-5 bg-primary-container rounded-full relative cursor-pointer">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full active-tab-indicator"></div>
+</div>
+</div>
+<div class="mt-6 p-4 rounded-lg bg-surface-container-highest/50 border border-white/5">
+<div class="flex justify-between items-center text-[11px] font-mono text-outline uppercase tracking-wider mb-2">
+<span>Input Gain</span>
+<span class="text-on-surface">82%</span>
+</div>
+<div class="w-full h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[82%] h-full bg-primary active-tab-indicator"></div>
+</div>
+</div>
+</section>
+<!-- Advanced Card with Backdrop -->
+<section class="col-span-12 h-48 rounded-xl overflow-hidden relative group cursor-pointer">
+<div class="absolute inset-0 bg-zinc-950/80 z-10"></div>
+<div class="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Abstract digital high-tech circuit background with glowing blue and violet data lines in a dark space" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBATwDg8mNfw3-GKKsf-LL6j2tNEZWuaGH2StsTNSXbG7LaO2YI1cVsVc9uDy22NXMWpmhHkqEcniyuNPgTWac-Bhfjj0zDxQUI_7kleIEHvg_M4DUPH1AoOkzppeNsNj6qRo3jIEC4KhWxpsC2dmc__o08oZorIKXGGoVc_reRcJXUJH6Awk6NQom6xfhk4QUkA4Nc9_sGrpXXScvaI8PPBSh1k5BtqX6AIWjSPrv-z0cxm_8ZYH0XW9JcwmZoS4uNbsqnhaiGNFU')"></div>
+<div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8">
+<h3 class="text-2xl font-bold tracking-tight mb-2">Need more power?</h3>
+<p class="text-outline text-sm max-w-md">Explore advanced rendering options and custom LLM integrations in our Advanced module.</p>
+<button class="mt-6 flex items-center gap-2 text-primary font-mono text-[11px] uppercase tracking-widest border-b border-primary/20 pb-1 hover:border-primary transition-all">
+<span>Explore Advanced</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer Utility Bar -->
+<footer class="fixed bottom-0 left-64 right-0 h-8 bg-zinc-950 border-t border-white/5 flex items-center justify-between px-6 z-50">
+<div class="flex items-center gap-4">
+<span class="font-mono text-[10px] uppercase text-zinc-500 tracking-[0.05em]">System Ready</span>
+<div class="w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></div>
+</div>
+<div class="flex items-center gap-6">
+<a class="font-mono text-[10px] uppercase text-zinc-600 hover:text-zinc-300 transition-colors" href="#">Documentation</a>
+<a class="font-mono text-[10px] uppercase text-zinc-600 hover:text-zinc-300 transition-colors" href="#">API Status</a>
+<span class="font-mono text-[10px] uppercase text-zinc-800">Lit // v1.0.4 build.0x9F</span>
+</div>
+</footer>
+</body></html>
