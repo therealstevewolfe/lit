@@ -391,6 +391,10 @@ impl PostProcessor {
             &prompt_template,
             payload,
         );
+        debug!(
+            "Prompt/context built: user_content length={} chars",
+            user_content.len()
+        );
 
         // Build system prompt
         let _system_prompt = crate::post_processing::PromptBuilder::build_system_prompt(
@@ -401,6 +405,7 @@ impl PostProcessor {
         );
 
         debug!("Sending to LLM: provider={}, model={}", provider.id, model);
+        debug!("Post-process model/provider invoked: provider={}, model={}", provider.id, model);
 
         // Use existing LLM client
         match llm_client::send_chat_completion(
@@ -415,6 +420,11 @@ impl PostProcessor {
         {
             Ok(Some(result)) => {
                 debug!("LLM response length: {} chars", result.len());
+                debug!(
+                    "Post-process output received: '{}' ({} chars)",
+                    result,
+                    result.len()
+                );
                 Some(result)
             }
             Ok(None) => {

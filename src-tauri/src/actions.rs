@@ -626,6 +626,12 @@ impl ShortcutAction for TranscribeAction {
         tauri::async_runtime::spawn(async move {
             let _guard = FinishGuard(ah.clone());
             debug!(
+                "Action received: '{}', post_process={}",
+                binding_id,
+                post_process
+            );
+
+            debug!(
                 "Starting async transcription task for binding: {}",
                 binding_id
             );
@@ -654,6 +660,7 @@ impl ShortcutAction for TranscribeAction {
                     });
 
                     // Transcribe concurrently with WAV save
+                    debug!("Before ASR: {} audio samples ready", sample_count);
                     let transcription_time = Instant::now();
                     let transcription_result = tm.transcribe(samples);
 
@@ -688,8 +695,14 @@ impl ShortcutAction for TranscribeAction {
                                 transcription_time.elapsed(),
                                 transcription
                             );
+                            debug!(
+                                "After ASR returns text: '{}' ({} chars)",
+                                transcription,
+                                transcription.len()
+                            );
 
                             if post_process {
+                                debug!("Entering post-process branch");
                                 show_processing_overlay(&ah);
                             }
                             let processed =
@@ -716,22 +729,32 @@ impl ShortcutAction for TranscribeAction {
                                 let ah_clone = ah.clone();
                                 let paste_time = Instant::now();
                                 let final_text = processed.final_text;
+                                let final_text_len = final_text.len();
                                 ah.run_on_main_thread(move || {
                                     // Check if we should replace the current selection
                                     let settings = get_settings(&ah_clone);
                                     let paste_result = if settings.replace_selection {
                                         debug!("Replacing selection with processed text");
                                         crate::clipboard::replace_selected_text(
-                                            final_text, &ah_clone,
+                                            final_text.clone(),
+                                            &ah_clone,
                                         )
                                     } else {
-                                        utils::paste(final_text, ah_clone.clone())
+                                        utils::paste(final_text.clone(), ah_clone.clone())
                                     };
                                     match paste_result {
-                                        Ok(()) => debug!(
-                                            "Text pasted successfully in {:?}",
-                                            paste_time.elapsed()
-                                        ),
+                                        Ok(()) => {
+                                            debug!(
+                                                "Final output emitted to UI: '{}' ({} chars) in {:?}",
+                                                final_text,
+                                                final_text_len,
+                                                paste_time.elapsed()
+                                            );
+                                            debug!(
+                                                "Text pasted successfully in {:?}",
+                                                paste_time.elapsed()
+                                            )
+                                        }
                                         Err(e) => {
                                             error!("Failed to paste transcription: {}", e);
                                             let _ = ah_clone.emit("paste-error", ());
