@@ -396,8 +396,8 @@ impl PostProcessor {
             user_content.len()
         );
 
-        // Build system prompt
-        let _system_prompt = crate::post_processing::PromptBuilder::build_system_prompt(
+        // Build system prompt to send alongside user content
+        let system_prompt = crate::post_processing::PromptBuilder::build_system_prompt(
             &self.settings
                 .custom_instructions
                 .clone()
@@ -407,12 +407,14 @@ impl PostProcessor {
         debug!("Sending to LLM: provider={}, model={}", provider.id, model);
         debug!("Post-process model/provider invoked: provider={}, model={}", provider.id, model);
 
-        // Use existing LLM client
-        match llm_client::send_chat_completion(
+        // Use send_chat_completion_with_schema so we can pass the system prompt
+        match llm_client::send_chat_completion_with_schema(
             provider,
             api_key.to_string(),
             model,
             user_content,
+            Some(system_prompt),
+            None,
             None,
             None,
         )

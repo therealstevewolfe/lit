@@ -203,7 +203,11 @@ impl IntentRouter {
 
     /// Check if transcript is a factual query requiring web search
     fn is_factual_query(transcript: &str) -> bool {
-        // Questions starting with what, who, where, when, how, why
+        // Only match actual question-word prefixes.
+        // Auxiliary verbs (is, can, will, do, should, etc.) are intentionally
+        // excluded because they start normal declarative sentences too often
+        // (e.g. "I should go", "Can you believe", "Do the right thing").
+        // The FACTUAL_KEYWORDS list already catches "what is", "who is", etc.
         let question_prefixes = [
             "what ",
             "what's ",
@@ -217,18 +221,6 @@ impl IntentRouter {
             "how's ",
             "why ",
             "why's ",
-            "is ",
-            "are ",
-            "was ",
-            "were ",
-            "do ",
-            "does ",
-            "did ",
-            "can ",
-            "could ",
-            "will ",
-            "would ",
-            "should ",
         ];
 
         let trimmed = transcript.trim();

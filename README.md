@@ -445,6 +445,14 @@ Exec=env LIT_NO_GTK_LAYER_SHELL=1 lit
 
 If a workaround helps you, please [open an issue](https://github.com/cjpais/Lit/issues) describing your distro, desktop environment, and session type — that information helps us narrow down the underlying bug.
 
+### Post-Processing Returns Only Raw Transcription
+
+If post-processing is enabled but the output is identical to the raw transcription, check the following:
+
+1. **A prompt must be selected.** Open Settings → Post-Processing and ensure a prompt (e.g., "Improve Transcriptions") is selected. If no prompt is chosen, post-processing is silently skipped.
+2. **An API key must be configured.** Verify that a valid API key is set for your chosen post-processing provider (e.g., MiniMax, OpenAI). An empty or invalid key causes the LLM call to fail, falling back to the raw transcription.
+3. **Check debug logs for errors.** Enable debug mode (`Ctrl+Shift+D` / `Cmd+Shift+D`) and look for `LLM request failed` or `Post-processing skipped` messages in the log output.
+
 ### How to Contribute
 
 1. **Check existing issues** at [github.com/cjpais/Lit/issues](https://github.com/cjpais/Lit/issues)

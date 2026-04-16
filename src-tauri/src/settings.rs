@@ -307,7 +307,7 @@ impl Default for OrtAcceleratorSetting {
 
 #[derive(Clone, Serialize, Deserialize, Type)]
 #[serde(transparent)]
-pub(crate) struct SecretMap(HashMap<String, String>);
+pub struct SecretMap(HashMap<String, String>);
 
 impl fmt::Debug for SecretMap {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
